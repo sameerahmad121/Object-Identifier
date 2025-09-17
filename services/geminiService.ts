@@ -1,12 +1,5 @@
-import { GoogleGenAI } from "@google/genai";
+import { ai } from './googleAI';
 import type { Language } from '../App';
-
-if (!process.env.API_KEY) {
-  // This will be caught by the framework and shown to the user.
-  throw new Error("API_KEY environment variable is not set");
-}
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const prompts = {
   'it-IT': "Analizza l'intera immagine ma concentrati sull'oggetto all'interno del cerchio bianco. Identifica questo oggetto principale usando la vista circostante per il contesto. Rispondi SOLO con il sostantivo italiano per l'oggetto. Ad esempio: 'Tazza' o 'Libro'. Se non sei sicuro, dì 'Oggetto non identificato'. Sii molto conciso.",

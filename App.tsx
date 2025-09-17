@@ -1,18 +1,14 @@
 
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { GoogleGenAI, Chat } from "@google/genai";
+import type { Chat } from "@google/genai";
+import { ai } from './services/googleAI';
 import { identifyObject } from './services/geminiService';
 import { useTextToSpeech } from './hooks/useTextToSpeech';
 import useIsMobile from './hooks/useIsMobile';
 import type { Position } from './types';
 import Spinner from './components/Spinner';
 import ChatPanel from './components/ChatPanel';
-
-// Ensure the environment variable is checked.
-if (!process.env.API_KEY) {
-  throw new Error("API_KEY environment variable not set.");
-}
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const BALL_DIAMETER = 64; // Further reduced ball size for precision
 const BALL_RADIUS = BALL_DIAMETER / 2;
@@ -255,10 +251,12 @@ const App: React.FC = () => {
     setFacingMode(prev => (prev === 'environment' ? 'user' : 'environment'));
   };
 
-  // FIX: Corrected the type of `touches` to `TouchList` as it is not generic.
-  // Also, cast the result of Array.from to Touch[] to provide types for touch objects.
-  const getDistance = (touches: TouchList) => {
-    const [touch1, touch2] = Array.from(touches) as Touch[];
+  // FIX: Corrected the type of `touches` to `React.TouchList` to match the type from React's
+  // TouchEvent. The native DOM `TouchList` is not compatible. Touches are accessed by index
+  // because `React.TouchList` is an array-like object.
+  const getDistance = (touches: React.TouchList) => {
+    const touch1 = touches[0];
+    const touch2 = touches[1];
     return Math.sqrt(
         Math.pow(touch2.clientX - touch1.clientX, 2) +
         Math.pow(touch2.clientY - touch1.clientY, 2)
