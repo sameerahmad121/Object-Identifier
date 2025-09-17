@@ -198,6 +198,10 @@ const App: React.FC = () => {
         const identifiedWord = await identifyObject(base64Data, language);
         speak(identifiedWord, language);
         
+        if (!ai) {
+          throw new Error("AI client is not available for chat. Check API_KEY configuration.");
+        }
+
         const systemInstruction = language === 'it-IT'
           ? `Sei un assistente disponibile. L'utente ha appena identificato un oggetto: '${identifiedWord}'. Rispondi alle loro domande su questo oggetto in modo conciso e in italiano.`
           : `You are a helpful assistant. The user has just identified an object: '${identifiedWord}'. Answer their questions about this object concisely and in English.`;

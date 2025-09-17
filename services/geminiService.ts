@@ -12,8 +12,13 @@ const prompts = {
  * @param base64ImageData The base64 encoded image data (without the data URL prefix).
  * @param language The target language for the identification.
  * @returns The name of the object in the specified language.
+ * @throws An error if the AI client is not initialized or if the API call fails.
  */
 export const identifyObject = async (base64ImageData: string, language: Language): Promise<string> => {
+  if (!ai) {
+    throw new Error("AI client is not initialized. Ensure the API_KEY is configured correctly.");
+  }
+
   try {
     const imagePart = {
       inlineData: {
@@ -45,8 +50,9 @@ export const identifyObject = async (base64ImageData: string, language: Language
   } catch (error) {
     console.error("Error identifying object with Gemini:", error);
     if (error instanceof Error) {
-        return `AI Error: ${error.message}`;
+        // Re-throw the error to be handled by the UI component
+        throw new Error(`AI Error: ${error.message}`);
     }
-    return "Unknown AI Error";
+    throw new Error("An unknown error occurred during AI object identification.");
   }
 };
