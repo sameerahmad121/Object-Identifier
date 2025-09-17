@@ -1,0 +1,8 @@
+{
+  "name": "Live Object Identifier (Italian)",
+  "description": "An interactive application that uses your camera to identify objects in real-time. Move the analysis circle to an object, and the AI will describe it in Italian with voice output.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
