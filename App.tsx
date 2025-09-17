@@ -198,10 +198,6 @@ const App: React.FC = () => {
         const identifiedWord = await identifyObject(base64Data, language);
         speak(identifiedWord, language);
         
-        if (!ai) {
-          throw new Error("AI client is not available for chat. Check API_KEY configuration.");
-        }
-
         const systemInstruction = language === 'it-IT'
           ? `Sei un assistente disponibile. L'utente ha appena identificato un oggetto: '${identifiedWord}'. Rispondi alle loro domande su questo oggetto in modo conciso e in italiano.`
           : `You are a helpful assistant. The user has just identified an object: '${identifiedWord}'. Answer their questions about this object concisely and in English.`;
@@ -297,7 +293,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-gray-900 text-white flex flex-col font-sans overflow-hidden">
       <header className="p-4 bg-gray-800 border-b border-gray-700 flex justify-between items-center shadow-lg sticky top-0 z-40">
         <h1 className="text-xl font-bold text-cyan-300">
-          sameer's ignorant helper
+          Live Object Identifier
         </h1>
         <div className="flex items-center space-x-4">
             <select
